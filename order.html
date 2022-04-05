@@ -1,84 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <title>Order</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Flower power!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="images/flower-icon.png" />
     <link rel="stylesheet" type="text/css" href="vendor/normalize.css">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
-    <link rel="stylesheet" type="text/css" href="styles/order.css">
-    <link rel="stylesheet" type="text/css" href="styles/filter.css">
+    <script type="text/javascript" src="scripts/main.js" defer></script>
+    <script type="text/javascript" src="scripts/order.js"></script>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
-<body class="content">
-    <header class="header primary-color-bg">
+
+
+<body class="content body-header-fixed">
+    <header class="header header-fixed primary-color-bg">
         <nav class="navigation container">
             <div class="menu">
                 <a href="index.html" class="link menu-item">Home</a>
-                <a href="order.html" class="link menu-item">Order</a>
+                <a href="order.html" class="link menu-item link-active">Order</a>
                 <a href="index.html" class="link">
                     <img class="scaled-image scaled-image-fixed" src="images/logo.svg" alt="Company logo">
                 </a>
-                <a href="#" class="link menu-item">Checkout</a>
                 <a href="#" class="link menu-item">Contact us</a>
+                <a href="#" class="link menu-item cart-menu">
+                    <img src="images/cart-icon.svg" alt="Cart icon">
+                    <div class="cart-menu-status">
+                        <div id="cart-items">0</div>
+                        <div>items</div>
+                    </div>
+                </a>
             </div>
         </nav>
     </header>
     <main class="main">
-        <div class="filter-category">
-            <h1 class="decorated-title font-secondary main-color">
-                <span class="main-color-emphasized">Filter</span> by category
-            </h1>
-            <div class="separator"></div>
-            <div class="filter-list">
-                <div class="filter">
-                    <p>Flowers</p>
-                    <img src="images/cross.png" alt="remove filter">
-                </div>
-                <div class="filter">
-                    <p>Tools</p>
-                    <img src="images/cross.png" alt="remove filter">
-                </div>
-            </div>
-            <div class="line-separator"></div>
-        </div>
-        <div class="inventory">
-            <h1 class="decorated-title font-secondary main-color centered-container">
-                <span class="main-color-emphasized">Flowers</span> inventory
-            </h1>
-            <div class="separator"></div>
-            <div class="inventory-grid">
-                <div class="inventory-card">
-                    <img src="images/tulip.jpg" alt="Tulip">
-                    <h1 class="font-secondary main-color centered-container">Tulips</h1>
-                </div>
-                <div class="inventory-card">
-                    <img src="images/lavender.jpg" alt="Lavender">
-                    <h1 class="font-secondary main-color centered-container">Lavender</h1>
-                </div>
-                <div class="inventory-card">
-                    <img src="images/fuchsia.jpg" alt="Fuchsia">
-                    <h1 class="font-secondary main-color centered-container">Fuchsia</h1>
-                </div>
-            </div>
-        </div>
-        <div class="inventory">
-            <h1 class="decorated-title font-secondary main-color centered-container">
-                <span class="main-color-emphasized">Tools</span> inventory
-            </h1>
-            <div class="separator"></div>
-            <div class="inventory-grid">
-                <div class="inventory-card">
-                    <img src="images/rake.jpg" alt="Rake">
-                    <h1 class="font-secondary main-color centered-container">Rakes</h1>
-                </div>
-                <div class="inventory-card">
-                    <img src="images/shovel.jpg" alt="Shovel">
-                    <h1 class="font-secondary main-color centered-container">Shovels</h1>
-                </div>
-            </div>
-        </div>
+
     </main>
     <footer class="footer">
         <div class="container">
@@ -96,5 +52,25 @@
             </div>
         </div>
     </footer>
+    <template id="category-template">
+        <section class="section secondary-color-bg">
+            <div class="centered-container">
+                <h1 class="decorated-title font-secondary main-color">
+                    <span class="main-color-emphasized">Category name</span>
+                    Inventory</h1>
+                <div class="separator"></div>
+            </div>
+            <div class="gallery">
+            </div>
+        </section>
+    </template>
+    <template id="product-template">
+        <div class="photo-box" data-id="">
+            <img class="photo-box-image" src=""></img>
+            <div class="photo-box-title font-secondary main-color-emphasized">Product name</div>
+            <div class="cart-btn" onclick=""></div>
+        </div>
+    </template>
 </body>
+
 </html>

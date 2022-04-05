@@ -8,21 +8,27 @@
     <link rel="shortcut icon" type="image/png" href="images/flower-icon.png" />
     <link rel="stylesheet" type="text/css" href="vendor/normalize.css">
     <link rel="stylesheet" type="text/css" href="styles/main.css">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="scripts/main.js" defer></script>
 
 </head>
 
 <body class="content">
-    <header class="header primary-color-bg">
+    <header class="header header-fixed header-search primary-color-bg">
         <nav class="navigation container">
             <div class="menu">
-                <a href="index.html" class="link menu-item">Home</a>
+                <a href="index.html" class="link link-active menu-item">Home</a>
                 <a href="order.html" class="link menu-item">Order</a>
                 <a href="index.html" class="link">
                     <img class="scaled-image scaled-image-fixed" src="images/logo.svg" alt="Company logo">
                 </a>
-                <a href="#" class="link menu-item">Checkout</a>
                 <a href="#" class="link menu-item">Contact us</a>
+                <a href="#" class="link menu-item cart-menu">
+                    <img src="images/cart-icon.svg" alt="Cart icon">
+                    <div class="cart-menu-status">
+                        <div id="cart-items">0</div>
+                        <div>items</div>
+                    </div>
+                </a>
             </div>
         </nav>
     </header>
@@ -37,8 +43,8 @@
         <section class="section primary-color-bg">
             <div class="container">
                 <div class="centered-container">
-                    <h1 class="decorated-title font-secondary main-color">The <span
-                            class="main-color-emphasized">Whole</span> Story</h1>
+                    <h1 class="decorated-title font-secondary main-color">The <span class="main-color-emphasized">
+                            Whole</span> Story</h1>
                     <div class="separator"></div>
                     <h2 class="decorated-subtitle main-color">We want to show the world what <em
                             class="main-color-emphasized">flower power</em> smells like</h2>
@@ -126,5 +132,5 @@
         </div>
     </footer>
 </body>
-
+<script
 </html>
