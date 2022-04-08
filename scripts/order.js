@@ -1,21 +1,20 @@
-let baseUrl = 'web1lab2.azurewebsites.net';
+const cartItemsKey = 'cart_items';
 
 function addToCart(id) {
+	id = id.toString();
+
 	let cartItems = {};
 
-	if(localStorage.getItem('cart_items') !== null) {
-		cartItems = JSON.parse(localStorage.getItem('cart_items'));
+	if(localStorage.getItem(cartItemsKey) !== null) {
+		cartItems = JSON.parse(localStorage.getItem(cartItemsKey));
 	}
-
 	if(cartItems.hasOwnProperty(id)) {
 		cartItems[id]++;
 	} else {
 		cartItems[id] = 1;
 	}
 
-	localStorage.setItem('cart_items', JSON.stringify(cartItems));
-
-	console.log(cartItems);
+	localStorage.setItem(cartItemsKey, JSON.stringify(cartItems));
 
 	refreshCartItems();
 }
@@ -50,6 +49,6 @@ let addCategories = async function (data) {
 
 		main.appendChild(category);
 	}
-};
+}
 
 getData();

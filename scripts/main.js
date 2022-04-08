@@ -1,7 +1,13 @@
 function refreshCartItems(){
-	// INSERT CODE HERE --> PRIPREMA
+	let	cartItems = JSON.parse(localStorage.getItem(cartItemsKey));
 
-	// END INSERT --> PRIPREMA
+	let count = 0
+
+	Object.keys(cartItems).forEach(function(key) {
+		count+=cartItems[key];
+	});
+
+	document.querySelector('#cart-items').textContent = count;
 }
 
 refreshCartItems();
