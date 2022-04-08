@@ -1,3 +1,5 @@
+let baseUrl = 'web1lab2.azurewebsites.net';
+
 function addToCart(id) {
 	let cartItems = {};
 
@@ -19,24 +21,22 @@ function addToCart(id) {
 }
 
 let getData = async function () {
-	let response = await fetch("https://web1lab2.azurewebsites.net/categories");
+	let response = await fetch('data/lab2.json');
 	let data = await response.json();
 	addCategories(data);
-
 }
 
-let addCategories = async function (categories) {
+let addCategories = async function (data) {
 	let main = document.querySelector('main');
 	let categoryTemplate = document.querySelector('#category-template');
 	let productTemplate = document.querySelector('#product-template');
 
-	for (let index = 0; index < categories.length; index++) {
+	for (let index = 0; index < data.categories.length; index++) {
 		let category = categoryTemplate.content.cloneNode(true);
 		let categoryTitleElement = category.querySelector('.decorated-title > span');
-		categoryTitleElement.textContent = categories[index].name;
+		categoryTitleElement.textContent = data.categories[index].name;
 
-		let productsResponse = await fetch("https://web1lab2.azurewebsites.net/products?categoryId=" + categories[index].id);
-		let products = await productsResponse.json();
+		let products = data.products.filter(p => p.categoryId ==  data.categories[index].id);
 
 		for(let i = 0; i < products.length; i++) {
 			let product = productTemplate.content.cloneNode(true);
@@ -44,6 +44,7 @@ let addCategories = async function (categories) {
 			product.querySelector('.photo-box-title').textContent = products[i].name;
 			product.querySelector('.photo-box-image').setAttribute('src', products[i].imageUrl);
 			product.querySelector('.cart-btn').setAttribute('onclick', `addToCart(${products[i].id})`);
+
 			category.querySelector('.gallery').appendChild(product);
 		}
 
