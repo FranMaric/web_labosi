@@ -1,5 +1,3 @@
-const cartItemsKey = 'cart_items';
-
 function addToCart(id) {
 	id = id.toString();
 

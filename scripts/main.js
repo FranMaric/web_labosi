@@ -1,3 +1,5 @@
+const cartItemsKey = 'cart_items';
+
 function refreshCartItems(){
 	let	cartItems = JSON.parse(localStorage.getItem(cartItemsKey));
 
