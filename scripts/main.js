@@ -1,10 +1,8 @@
-const cartItemsKey = 'cart_items';
-
 function refreshCartItems(){
 	let cartItems = {};
 
 	if(localStorage.getItem(cartItemsKey) !== null) {
-		cartItems = JSON.parse(localStorage.getItem(cartItemsKey));
+		cartItems = JSON.parse(localStorage.getItem('cart_items'));
 	}
 
 	let count = 0

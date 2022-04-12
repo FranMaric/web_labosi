@@ -4,7 +4,7 @@ function addToCart(id) {
 	let cartItems = {};
 
 	if(localStorage.getItem(cartItemsKey) !== null) {
-		cartItems = JSON.parse(localStorage.getItem(cartItemsKey));
+		cartItems = JSON.parse(localStorage.getItem('cart_items'));
 	}
 	if(cartItems.hasOwnProperty(id)) {
 		cartItems[id]++;
@@ -12,19 +12,30 @@ function addToCart(id) {
 		cartItems[id] = 1;
 	}
 
-	localStorage.setItem(cartItemsKey, JSON.stringify(cartItems));
+	localStorage.setItem('cart_items', JSON.stringify(cartItems));
 
 	refreshCartItems();
 }
 
 let getData = async function () {
 	let response = await fetch('data/lab2.json');
-	let data = await response.json();
-	addCategories(data);
+	data = await response.json();
+	addCategories();
 }
 
-let addCategories = async function (data) {
+var data;
+
+
+let addCategories = async function () {
 	let main = document.querySelector('main');
+
+	let child = main.lastElementChild;
+	while (child) {
+		if(child.classList.contains('order-filter')) break;
+		main.removeChild(child);
+		child = main.lastElementChild;
+	}
+
 	let categoryTemplate = document.querySelector('#category-template');
 	let productTemplate = document.querySelector('#product-template');
 
@@ -35,12 +46,15 @@ let addCategories = async function (data) {
 
 		let products = data.products.filter(p => p.categoryId ==  data.categories[index].id);
 
-		for(let i = 0; i < products.length; i++) {
+		let filter = localStorage.getItem('filter');
+		let filteredProducts = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+
+		for(let i = 0; i < filteredProducts.length; i++) {
 			let product = productTemplate.content.cloneNode(true);
-			product.querySelector('.photo-box').setAttribute('data-id', products[i].id);
-			product.querySelector('.photo-box-title').textContent = products[i].name;
-			product.querySelector('.photo-box-image').setAttribute('src', products[i].imageUrl);
-			product.querySelector('.cart-btn').setAttribute('onclick', `addToCart(${products[i].id})`);
+			product.querySelector('.photo-box').setAttribute('data-id', filteredProducts[i].id);
+			product.querySelector('.photo-box-title').textContent = filteredProducts[i].name;
+			product.querySelector('.photo-box-image').setAttribute('src', filteredProducts[i].imageUrl);
+			product.querySelector('.cart-btn').setAttribute('onclick', `addToCart(${filteredProducts[i].id})`);
 
 			category.querySelector('.gallery').appendChild(product);
 		}
@@ -50,3 +64,13 @@ let addCategories = async function (data) {
 }
 
 getData();
+
+window.onload = function(){
+	document.querySelector('.order-filter-apply').addEventListener("click", function() {
+		let input = document.querySelector('.order-filter-input').value;
+
+		localStorage.setItem('filter', input);
+
+		addCategories();
+	});
+}

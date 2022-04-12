@@ -30,7 +30,7 @@ function getCart() {
             let quantity = cartItem.querySelector('.cart-item-quantity');
             quantity.value = cart[id];
 
-            cartItem.querySelector('.cart-item-price').textContent = product.price + ' kn';
+            cartItem.querySelector('.cart-item-price').textContent = product.price;
 
             container.appendChild(cartItem);
         }
