@@ -1,7 +1,7 @@
 function refreshCartItems(){
 	let cartItems = {};
 
-	if(localStorage.getItem(cartItemsKey) !== null) {
+	if(localStorage.getItem('cart_items') !== null) {
 		cartItems = JSON.parse(localStorage.getItem('cart_items'));
 	}
 

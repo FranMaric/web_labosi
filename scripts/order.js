@@ -44,17 +44,16 @@ let addCategories = async function () {
 		let categoryTitleElement = category.querySelector('.decorated-title > span');
 		categoryTitleElement.textContent = data.categories[index].name;
 
-		let products = data.products.filter(p => p.categoryId ==  data.categories[index].id);
-
 		let filter = localStorage.getItem('filter');
-		let filteredProducts = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+		if(!filter) filter='';
+		let products = data.products.filter(p => p.categoryId ==  data.categories[index].id && p.name.toLowerCase().includes(filter.toLowerCase()));
 
-		for(let i = 0; i < filteredProducts.length; i++) {
+		for(let i = 0; i < products.length; i++) {
 			let product = productTemplate.content.cloneNode(true);
-			product.querySelector('.photo-box').setAttribute('data-id', filteredProducts[i].id);
-			product.querySelector('.photo-box-title').textContent = filteredProducts[i].name;
-			product.querySelector('.photo-box-image').setAttribute('src', filteredProducts[i].imageUrl);
-			product.querySelector('.cart-btn').setAttribute('onclick', `addToCart(${filteredProducts[i].id})`);
+			product.querySelector('.photo-box').setAttribute('data-id', products[i].id);
+			product.querySelector('.photo-box-title').textContent = products[i].name;
+			product.querySelector('.photo-box-image').setAttribute('src', products[i].imageUrl);
+			product.querySelector('.cart-btn').setAttribute('onclick', `addToCart(${products[i].id})`);
 
 			category.querySelector('.gallery').appendChild(product);
 		}
