@@ -1,11 +1,10 @@
 function getCart() {
-	let	cartItems = JSON.parse(localStorage.getItem(cartItemsKey));
-
-    console.log(cartItems);
+    return JSON.parse(localStorage.getItem(cartItemsKey));
 }
 
  let refreshCart = async function () {
     let cart = getCart();
+
     if(cart){
         let ids = Object.keys(cart);
         if(ids.length < 1) return;
@@ -16,11 +15,9 @@ function getCart() {
         let cartHeader = cartHeaderTemplate.content.cloneNode(true);
         container.appendChild(cartHeader);
 
-        //INSERT CODE HERE - Zadatak
-
-        //END INSERT CODE - Zadatak
-
+        let response = await fetch('data/lab2.json');
         let data = await response.json();
+
         let cartItemTemplate = document.querySelector('#cart-template-item');
         for(const id of ids){
             let product = data.products.find(p => p.id == id);
@@ -33,9 +30,7 @@ function getCart() {
             let quantity = cartItem.querySelector('.cart-item-quantity');
             quantity.value = cart[id];
 
-            //INSERT CODE HERE - Zadatak
-
-            //END INSERT CODE - Zadatak
+            cartItem.querySelector('.cart-item-price').textContent = product.price + ' kn';
 
             container.appendChild(cartItem);
         }
