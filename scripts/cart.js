@@ -1,5 +1,5 @@
 function getCart() {
-    return JSON.parse(localStorage.getItem(cartItemsKey));
+    return JSON.parse(localStorage.getItem('cart_items'));
 }
 
  let refreshCart = async function () {
