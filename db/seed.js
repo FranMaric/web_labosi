@@ -4,7 +4,7 @@ const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'web1-lab3',
-    password: 'LOZINKA',
+    password: '123',
     port: 5432,
 });
 
@@ -28,7 +28,7 @@ const sql_create_categories = `DROP TABLE IF EXISTS categories;
 
 const sql_insert_inventory = `INSERT INTO inventory (
     name, price, categoryId, imageUrl, colors)
-    VALUES 
+    VALUES
     ('Tulip', 10, 1, 'https://i.imgur.com/Ttir6mp.jpg', 'white, red, yellow'),
     ('Lavender', 15, 1, 'https://i.imgur.com/gH33WyT.jpg', 'blue'),
     ('Fuchsia', 50, 1, 'https://i.imgur.com/s27QJBL.jpg', 'red-purple, white-purple, white-pink'),
@@ -41,7 +41,7 @@ const sql_insert_inventory = `INSERT INTO inventory (
     ('Tulip (1 kg)', 200, 4, 'https://i.imgur.com/WUYYzBG.jpg', 'white, mix, yellow');
 `;
 
-const sql_insert_category = `INSERT INTO categories (name, description, seasonal) VALUES 
+const sql_insert_category = `INSERT INTO categories (name, description, seasonal) VALUES
     ('Flowers', 'Flowers make us smile', 'Yes'),
     ('Indoor plants', 'Bring nature inside', 'No'),
     ('Tools', 'Every gardener needs good tools', 'No'),
