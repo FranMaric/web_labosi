@@ -377,7 +377,7 @@ body {
     border: 1px solid #ab4f8b;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    
+
 }
 
 .item-view-text {
@@ -421,4 +421,8 @@ body {
 .link-active {
     text-decoration: underline;
     color: #ab4f8b;
+}
+
+.inventory:nth-child(even) {
+    background-color: #f7f7f7;
 }
