@@ -15,6 +15,9 @@
                     <span class="main-color-emphasized"><%-  category.name %></span>
                     Inventory</h1>
                 <div class="separator"></div>
+                <% if(category.items.length === 0){ %>
+                    <h1 class="decorated-title font-secondary main-color">No items in this category</h1>
+                <% } %>
             </div>
             <div class="gallery">
                 <% for (let item of category.items) {%>
@@ -24,10 +27,6 @@
                             <a class="link" href="../item/<%- item.id %>"><%- item.name %></a>
                         </div>
                     </div>
-                <% } %>
-
-                <% if(category.items.length === 0){ %>
-                    <span>No items in this category</span>
                 <% } %>
             </div>
         </section>
