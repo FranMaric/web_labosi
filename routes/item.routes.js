@@ -2,8 +2,14 @@ var express = require('express');
 var { InventoryRepository } = require('../db/inventory_repository');
 var router = express.Router();
 
-router.get('/:id([0-9]{1,20})', async function(req, res, next) {
+router.get('/:id', async function(req, res, next) {
     let id = parseInt(req.params.id);
+
+    if(isNaN(id)) {
+        res.status(404).send(`Item id must be number :(`);
+        return;
+    }
+
     let item = await InventoryRepository.getItem(id);
 
     if (item === null) {
@@ -13,7 +19,7 @@ router.get('/:id([0-9]{1,20})', async function(req, res, next) {
 
     res.render('item', {
         title: item.name,
-        linkActive: 'item',
+        linkActive: 'order',
         item: item,
     });
 });
