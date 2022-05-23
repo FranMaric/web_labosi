@@ -50,6 +50,29 @@ const sql_insert_category = `INSERT INTO categories (name, description, seasonal
     ('Fertilizers', 'Essential nutrients', 'No');
 `;
 
+const sql_create_partners = `DROP TABLE IF EXISTS partners;
+    CREATE TABLE partners (
+    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name text NOT NULL,
+    owner_name text NOT NULL,
+    owner_surname text NOT NULL,
+    email text NOT NULL,
+    partnerSince numeric NOT NULL,
+    partnerFor int NOT NULL
+)`;
+
+const sql_insert_partners = `INSERT INTO partners (name, owner_name, owner_surname, email, partnerSince, partnerFor) VALUES
+    ('Vesela rotkvica', 'Roko', 'Rotkvić', 'roko.rotkvic@vesela.rotkvica.hr', 2012, 1),
+    ('Urbani vrt d.o.o.', 'Vrtić', 'Ferić', 'urbani.vrt@fer.hr', 2021, 7),
+    ('Trnovit put', 'Ružica', 'Ružić', 'ruzica.ruzic@trn.hr', 1999, 3),
+    ('Cvjetko j.d.o.o.', 'Ivančica', 'Cvjetić', 'ivancica.cvjetic@flowershop.hr', 2013, 2),
+    ('Sunce', 'Sunčica', 'Horvat', 'suncica.horvat@sunce.hr', 2005, 5),
+    ('Proljeće101', 'Hrvoje', 'Hortenzijo', 'hrvoje.hortenzijo@proljece.hr', 1990, 7),
+    ('Jagodica d.o.o.', 'Jagoda', 'Jagodić', 'jagoda.jagodic@jagodica.hr', 2019, 8),
+    ('Leptir d.0.0.', 'Iris', 'Leptirić', 'iris.leptiric1989@leptir.hr', 2000, 2),
+    ('Šareni vrt, d.o.o.', 'Narcisa', 'Spring', 'narcisa.spring@sarenivrt.hr', 1998, 4),
+    ('Jabuka Granny Smith', 'Lily Rose', 'Žutić Kljutić', 'lily.zutic-k22@grannysmith.jabuka.hr', 1997, 1);
+`;
 
 pool.query(sql_create_inventory, [], (err, result) => {
     if (err) {
@@ -69,6 +92,18 @@ pool.query(sql_create_categories, [], (err, result) => {
     }
     console.log("Successful creation of the 'categories' table");
     pool.query(sql_insert_category, [], (err, result) => {
+        if (err) {
+            return console.error(err.message);
+        }
+    });
+});
+
+pool.query(sql_create_partners, [], (err, result) => {
+    if (err) {
+        return console.error(err.message);
+    }
+    console.log("Successful creation of the 'partners' table");
+    pool.query(sql_insert_partners, [], (err, result) => {
         if (err) {
             return console.error(err.message);
         }

@@ -1,4 +1,4 @@
-const { query } = require("./db");
+const { query } = require("./index");
 
 class InventoryRepository {
     static async getItem(itemId) {
@@ -20,9 +20,28 @@ class InventoryRepository {
         return items.rows;
     }
 
+    // static async createNewPartner(name, ownerName, ownerSurname, email, partnerSince, selectId) {
+    //     return await ;
+    // }
+
+    static async getAllItems() {
+        let items = await query(`SELECT * FROM inventory`);
+        return items.rows;
+    }
+
     static async getCategories() {
         let categories = await query("SELECT * FROM categories");
         return categories.rows;
+    }
+
+    static async getPartners(itemId) {
+        let partners = await query(`select * from partners where partnerfor=${itemId}`);
+        return partners.rows;
+    }
+
+    static async getAllPartners() {
+        let partners = await query('select * from partners');
+        return partners.rows;
     }
 }
 

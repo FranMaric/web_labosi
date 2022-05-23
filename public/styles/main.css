@@ -377,9 +377,7 @@ body {
     border: 1px solid #ab4f8b;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    
 }
 
 .item-view-text {
@@ -387,7 +385,6 @@ body {
     position: relative;
     width: 300px;
     height: 300px;
-    margin-left: 15px;
 }
 
 .item-view-text-title {
@@ -426,6 +423,50 @@ body {
     color: #ab4f8b;
 }
 
-.inventory:nth-child(even) {
+.icon_crud {
+    width: 15px;
+    display: inline;
+}
+
+.info_container {
+    margin: auto;
+    width: fit-content;
+    padding-bottom: 10px;
+}
+
+.fieldset {
     background-color: #f7f7f7;
+    padding: 5px;
+    border-color: #ab4f8b;
+    margin: 10px;
+}
+
+.label-input {
+    padding: 5px;
+    font-family: 'Roboto', sans-serif;
+}
+
+label {
+    width: 125px;
+    display: inline-block;
+}
+
+.btn {
+    background-color: #ab4f8b;
+    border: 1px solid #e0aacd;
+    color: #ffffff;
+    padding: 0.5em;
+    border-radius: 5px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.btn:focus {
+    outline: none;
+}
+
+.btn:hover {
+    outline: none;
+    background-color: #e0aacd;
+    border-color: #ab4f8b;
 }

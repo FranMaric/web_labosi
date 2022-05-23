@@ -17,10 +17,13 @@ router.get('/:id', async function(req, res, next) {
         return;
     }
 
+    let partners = await InventoryRepository.getPartners(id);
+
     res.render('item', {
         title: item.name,
         linkActive: 'order',
         item: item,
+        partners: partners,
     });
 });
 
