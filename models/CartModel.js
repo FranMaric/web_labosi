@@ -15,22 +15,22 @@ function createCart() {
 function update(cart) {
 
     cart.totalAmount = 0
-    for(let item of Object.values(cart.items)) 
+    for(let item of Object.values(cart.items))
         cart.totalAmount += item.price * item.quantity
 }
 
 //dodaj jedan ili više komada nekog artikla u košaricu
 async function addItemToCart(cart, id, quantity) {
-        
+
     //dohvati zapis artikla u košarici
     let itemObject = cart.items[id]
-    
+
     //ako artikl ne postoji u košarici, stvori novi objet artikla
     if( itemObject === undefined ) {
         itemObject = {id: id, name: undefined, price: undefined, quantity: 0, imageurl: undefined}
         cart.items[id] = itemObject
     }
-    
+
     //pokušaj dobaviti ime, cijenu i url slike artikla
     if(itemObject.price === undefined) {
         if( itemData = await getItemData(id) ) {
@@ -45,8 +45,8 @@ async function addItemToCart(cart, id, quantity) {
 
     //ažuriraj ukupnu cijenu košarice
     update(cart)
-    
-    //console.log("CART MODEL: addItem: " + JSON.stringify(cart))
+
+    console.log("CART MODEL: addItem: " + JSON.stringify(cart))
 }
 
 //makni jedan ili više komada nekog artikla iz košarice
@@ -74,15 +74,15 @@ async function removeItemFromCart(cart, id, quantity) {
 
 //dohvati podatke o artiklu iz baze podataka
 async function getItemData(id) {
-        
+
     const sql = `SELECT name, price, imageurl FROM inventory WHERE id = ` + id;
     try {
         const result = await db.query(sql, []);
         return {
             name: result.rows[0].name,
-            price: result.rows[0].price, 
+            price: result.rows[0].price,
             image: result.rows[0].imageurl
-        } 
+        }
     } catch (err) {
         console.log(err);
         throw err

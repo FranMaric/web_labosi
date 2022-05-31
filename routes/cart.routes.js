@@ -5,29 +5,28 @@ const cartSanitizer = require('./helpers/cart-sanitizer');
 
 // Ulančavanje funkcija međuopreme
 router.get('/', cartSanitizer, function (req, res, next) {
-    //####################### ZADATAK #######################
-    // prikaz košarice uz pomoć cart.ejs
+    if (req.session.cart === undefined) {
+        req.session.cart = cart.createCart();
+    }
 
-    //#######################################################
+    res.render("cart", {
+        title: 'Cart',
+        user: req.session.user,
+        cart: req.session.cart,
+        linkActive: 'cart',
+        err: undefined
+    });
 });
 
 
-router.get('/add/:id', function (req, res, next) {
-    //####################### ZADATAK #######################
-    //dodavanje jednog artikla u košaricu
-
-    //#######################################################
-
-
+router.get('/add/:id', async function (req, res, next) {
+    await cart.addItemToCart(req.session.cart, req.params.id, 1);
+    res.status(200).send();
 });
 
-router.get('/remove/:id', function (req, res, next) {
-    //####################### ZADATAK #######################
-    //brisanje jednog artikla iz košarice
-
-    //#######################################################
-
-
+router.get('/remove/:id', async function (req, res, next) {
+    await cart.removeItemFromCart(req.session.cart, req.params.id, 1);
+    res.status(200).send();
 });
 
 module.exports = router;
