@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
         let userEmail = await User.fetchByEmail(req.body.email);
 
         //ako korisnik postoji, javi grešku
-        if (user.id !== undefined) {
+        if (user !== undefined && user.id !== undefined) {
             res.render('Signup', {
                 title: 'Register a new user',
                 linkActive: 'signup',
@@ -41,7 +41,7 @@ router.post('/', function (req, res, next) {
                 err: "Username already exists"
             });
             return;
-        } else if (userEmail.id !== undefined) {
+        } else if (userEmail !== undefined && userEmail.id !== undefined) {
             res.render('Signup', {
                 title: 'Register a new user',
                 linkActive: 'signup',

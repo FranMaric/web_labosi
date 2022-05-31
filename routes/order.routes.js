@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const cart = require('../models/CartModel')
 const db = require('../db');
 
 router.get('/', async function (req, res, next) {
+    if (req.session.cart === undefined) {
+        req.session.cart = cart.createCart();
+    }
+
     const sqlCategories = `SELECT * FROM categories ORDER BY id;`;
     const sqlInventory = `SELECT * FROM inventory ORDER BY categoryid, id;`;
     try {
