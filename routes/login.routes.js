@@ -4,11 +4,12 @@ const User = require('../models/UserModel')
 
 
 router.get('/', function (req, res, next) {
-    //####################### ZADATAK #######################
-    //vrati login stranicu
-
-    //#######################################################
-
+    res.render('login', {
+        title: 'Login',
+        user: req.session.user,
+        linkActive: 'login',
+        err: undefined
+    });
 });
 
 router.post('/', function (req, res, next) {

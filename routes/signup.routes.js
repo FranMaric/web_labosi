@@ -58,14 +58,9 @@ router.post('/', function (req, res, next) {
         //stvori adresu korisnika
         address = new Address(user, user.first_name + " " + user.last_name, req.body.street, req.body.postcode, req.body.city, req.body.country);
         await address.persist();
-        //####################### ZADATAK #######################
-        // registracija novog korisnika
 
-        // Potrebno je dodati sljedeću funkcionalnost:
-        // - ako je prijava uspjela, povezati sjednicu s registriranim korisnikom
-        // - napraviti redirect na home stranicu
-
-        //#######################################################
+        req.session.user = user;
+        res.redirect('/');
     })()
 
 });
