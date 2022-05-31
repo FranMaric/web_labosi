@@ -1,47 +1,112 @@
-const {Pool} = require('pg');
+const {
+    Pool
+} = require('pg');
 
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'web1-lab3',
-    password: '123',
+    database: 'web-lab4',
+    password: 'bazepodataka',
     port: 5432,
 });
 
-const sql_create_inventory = `DROP TABLE IF EXISTS inventory;
-    CREATE TABLE inventory (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name text NOT NULL UNIQUE,
-    price numeric NOT NULL,
-    categoryId int NOT NULL,
-    imageUrl text NOT NULL,
-    colors text NOT NULL
-)`;
 
-const sql_create_categories = `DROP TABLE IF EXISTS categories;
-    CREATE TABLE categories (
+const sql_create_categories = `CREATE TABLE categories (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name text NOT NULL UNIQUE,
     description text NOT NULL,
     seasonal text NOT NULL
 )`;
 
+const sql_create_category_id_index = `CREATE UNIQUE INDEX idx_categoryId ON categories(id)`;
+
+
+const sql_create_inventory = `CREATE TABLE inventory (
+    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name text NOT NULL UNIQUE,
+    price numeric NOT NULL,
+    categoryId int REFERENCES categories(id),
+    imageUrl text NOT NULL
+)`;
+
+const sql_create_inventory_id_index = `CREATE UNIQUE INDEX idx_inventoryId ON inventory(id)`;
+const sql_create_inventory_category_index = `CREATE INDEX idx_inventoryCategory ON inventory(categoryId)`;
+
+
+const sql_create_users = `CREATE TABLE users (
+    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_name text NOT NULL UNIQUE,
+    first_name text NOT NULL,
+    last_name text NOT NULL,
+    email text NOT NULL,
+    password text NOT NULL,
+    role text
+)`;
+
+const sql_create_users_id_index = `CREATE UNIQUE INDEX idx_usersId ON users(id)`;
+
+const sql_create_address = `CREATE TABLE address (
+    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id int REFERENCES users(id),
+    name text NOT NULL,
+    street text NOT NULL,
+    code text NOT NULL,
+    town text NOT NULL,
+    country text NOT NULL
+)`;
+const sql_create_cart = `CREATE TABLE cart (
+    user_id int REFERENCES users(id),
+    inventory_id int REFERENCES inventory(id),
+    items int NOT NULL,
+    PRIMARY KEY (user_id, inventory_id)
+)`;
+const sql_create_order = `CREATE TABLE orders (
+    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    order_date date NOT NULL,
+    user_id int REFERENCES users(id),
+    address json NOT NULL,
+    cart json NOT NULL
+)`;
+
+const sql_create_order_user_index = `CREATE INDEX idx_orderUserId ON orders(user_id)`;
+
+
+const sql_create_history = `CREATE TABLE history (
+    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    user_id int REFERENCES users(id),
+    inventory_id int REFERENCES inventory(id),
+    history_date date NOT NULL
+)`;
+
+const sql_create_history_index = `CREATE INDEX idx_historyUser ON history(user_id)`;
+
+
+const sql_create_sessions = `CREATE TABLE session (
+    sid varchar NOT NULL COLLATE "default",
+    sess json NOT NULL,
+    expire timestamp(6) NOT NULL
+  )
+  WITH (OIDS=FALSE);`
+
+const sql_create_session_index1 = `ALTER TABLE session ADD CONSTRAINT session_pkey PRIMARY KEY (sid) NOT DEFERRABLE INITIALLY IMMEDIATE`
+const sql_create_session_index2 = `CREATE INDEX IDX_session_expire ON session(expire)`
+
 const sql_insert_inventory = `INSERT INTO inventory (
-    name, price, categoryId, imageUrl, colors)
-    VALUES
-    ('Tulip', 10, 1, 'https://i.imgur.com/Ttir6mp.jpg', 'white, red, yellow'),
-    ('Lavender', 15, 1, 'https://i.imgur.com/gH33WyT.jpg', 'blue'),
-    ('Fuchsia', 50, 1, 'https://i.imgur.com/s27QJBL.jpg', 'red-purple, white-purple, white-pink'),
-    ('Daisy', 30, 1, 'https://i.imgur.com/Agarl4v.jpg', 'white'),
-    ('Orchid', 90, 2, 'https://i.imgur.com/Dx4q8uE.jpg', 'green, white, purple'),
-    ('Fittonia', 80, 2, 'https://i.imgur.com/G9JfR3S.jpg', 'green, red'),
-    ('Showel', 150, 3, 'https://i.imgur.com/BcjgzeT.jpg', 'metal'),
-    ('Small showel', 50, 3, 'https://i.imgur.com/L80eL1e.jpg', 'metal'),
-    ('Rake', 100, 3, 'https://i.imgur.com/I5ctUan.jpg', 'metal'),
-    ('Tulip (1 kg)', 200, 4, 'https://i.imgur.com/WUYYzBG.jpg', 'white, mix, yellow');
+    name, price, categoryId, imageUrl)
+    VALUES 
+    ('Tulip', 10, 1, 'https://i.imgur.com/Ttir6mp.jpg'),
+    ('Lavender', 15, 1, 'https://i.imgur.com/gH33WyT.jpg'),
+    ('Fuchsia', 50, 1, 'https://i.imgur.com/s27QJBL.jpg'),
+    ('Daisy', 30, 1, 'https://i.imgur.com/Agarl4v.jpg'),
+    ('Orchid', 90, 2, 'https://i.imgur.com/Dx4q8uE.jpg'),
+    ('Fittonia', 80, 2, 'https://i.imgur.com/G9JfR3S.jpg'),
+    ('Showel', 150, 3, 'https://i.imgur.com/BcjgzeT.jpg'),
+    ('Small showel', 50, 3, 'https://i.imgur.com/L80eL1e.jpg'),
+    ('Rake', 100, 3, 'https://i.imgur.com/I5ctUan.jpg'),
+    ('Tulip (1 kg)', 200, 4, 'https://i.imgur.com/WUYYzBG.jpg');
 `;
 
-const sql_insert_category = `INSERT INTO categories (name, description, seasonal) VALUES
+const sql_insert_category = `INSERT INTO categories (name, description, seasonal) VALUES 
     ('Flowers', 'Flowers make us smile', 'Yes'),
     ('Indoor plants', 'Bring nature inside', 'No'),
     ('Tools', 'Every gardener needs good tools', 'No'),
@@ -50,62 +115,92 @@ const sql_insert_category = `INSERT INTO categories (name, description, seasonal
     ('Fertilizers', 'Essential nutrients', 'No');
 `;
 
-const sql_create_partners = `DROP TABLE IF EXISTS partners;
-    CREATE TABLE partners (
-    id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name text NOT NULL,
-    owner_name text NOT NULL,
-    owner_surname text NOT NULL,
-    email text NOT NULL,
-    partnerSince numeric NOT NULL,
-    partnerFor int NOT NULL
-)`;
+const sql_insert_users = `INSERT INTO users (user_name, first_name, last_name, email, password, role) VALUES ('admin', 'Adminko', 'Administratović', 'null@admin', 'admin', 'admin')`
 
-const sql_insert_partners = `INSERT INTO partners (name, owner_name, owner_surname, email, partnerSince, partnerFor) VALUES
-    ('Vesela rotkvica', 'Roko', 'Rotkvić', 'roko.rotkvic@vesela.rotkvica.hr', 2012, 1),
-    ('Urbani vrt d.o.o.', 'Vrtić', 'Ferić', 'urbani.vrt@fer.hr', 2021, 7),
-    ('Trnovit put', 'Ružica', 'Ružić', 'ruzica.ruzic@trn.hr', 1999, 3),
-    ('Cvjetko j.d.o.o.', 'Ivančica', 'Cvjetić', 'ivancica.cvjetic@flowershop.hr', 2013, 2),
-    ('Sunce', 'Sunčica', 'Horvat', 'suncica.horvat@sunce.hr', 2005, 5),
-    ('Proljeće101', 'Hrvoje', 'Hortenzijo', 'hrvoje.hortenzijo@proljece.hr', 1990, 7),
-    ('Jagodica d.o.o.', 'Jagoda', 'Jagodić', 'jagoda.jagodic@jagodica.hr', 2019, 8),
-    ('Leptir d.0.0.', 'Iris', 'Leptirić', 'iris.leptiric1989@leptir.hr', 2000, 2),
-    ('Šareni vrt, d.o.o.', 'Narcisa', 'Spring', 'narcisa.spring@sarenivrt.hr', 1998, 4),
-    ('Jabuka Granny Smith', 'Lily Rose', 'Žutić Kljutić', 'lily.zutic-k22@grannysmith.jabuka.hr', 1997, 1);
-`;
+const sql_insert_address = `INSERT INTO address (user_id, name, street, code, town, country) VALUES (1, 'Dragi Admin', 'Za konzolom b.b.', '42', 'Igdje', 'Globalija')`
 
-pool.query(sql_create_inventory, [], (err, result) => {
-    if (err) {
-        return console.error(err.message);
-    }
-    console.log("Successful creation of the 'inventory' table");
-    pool.query(sql_insert_inventory, [], (err, result) => {
-        if (err) {
-            return console.error(err.message);
+let table_names = [
+    "categories",
+    "inventory",
+    "users",
+    "address",
+    "cart",
+    "order",
+    "history",
+    "sessions"
+]
+
+let tables = [
+    sql_create_categories,
+    sql_create_inventory,
+    sql_create_users,
+    sql_create_address,
+    sql_create_cart,
+    sql_create_order,
+    sql_create_history,
+    sql_create_sessions
+];
+
+let table_data = [
+    sql_insert_category,
+    sql_insert_inventory,
+    sql_insert_users,
+    sql_insert_address,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+]
+
+let indexes = [
+    sql_create_category_id_index,
+    sql_create_inventory_id_index,
+    sql_create_inventory_category_index,
+    sql_create_users_id_index,
+    sql_create_order_user_index,
+    sql_create_history_index,
+    sql_create_session_index1,
+    sql_create_session_index2
+];
+
+if ((tables.length !== table_data.length) || (tables.length !== table_names.length)) {
+    console.log("tables, names and data arrays length mismatch.")
+    return
+}
+
+//create tables and populate with data (if provided)
+
+(async () => {
+    console.log("Creating and populating tables");
+    for (let i = 0; i < tables.length; i++) {
+        console.log("Creating table " + table_names[i] + ".");
+        try {
+            await pool.query(tables[i], [])
+            console.log("Table " + table_names[i] + " created.");
+            if (table_data[i] !== undefined) {
+                try {
+                    await pool.query(table_data[i], [])
+                    console.log("Table " + table_names[i] + " populated with data.");
+                } catch (err) {
+                    console.log("Error populating table " + table_names[i] + " with data.")
+                    return console.log(err.message);
+                }
+            }
+        } catch (err) {
+            console.log("Error creating table " + table_names[i])
+            return console.log(err.message);
         }
-    });
-});
-
-pool.query(sql_create_categories, [], (err, result) => {
-    if (err) {
-        return console.error(err.message);
     }
-    console.log("Successful creation of the 'categories' table");
-    pool.query(sql_insert_category, [], (err, result) => {
-        if (err) {
-            return console.error(err.message);
-        }
-    });
-});
 
-pool.query(sql_create_partners, [], (err, result) => {
-    if (err) {
-        return console.error(err.message);
-    }
-    console.log("Successful creation of the 'partners' table");
-    pool.query(sql_insert_partners, [], (err, result) => {
-        if (err) {
-            return console.error(err.message);
+    console.log("Creating indexes");
+    for (let i = 0; i < indexes.length; i++) {
+        try {
+            await pool.query(indexes[i], [])
+            console.log("Index " + i + " created.")
+        } catch (err) {
+            console.log("Error creating index " + i + ".")
         }
-    });
-});
+    }
+
+    await pool.end();
+})()
