@@ -6,7 +6,7 @@ const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
     database: 'web-lab4',
-    password: 'bazepodataka',
+    password: '123',
     port: 5432,
 });
 
@@ -93,7 +93,7 @@ const sql_create_session_index2 = `CREATE INDEX IDX_session_expire ON session(ex
 
 const sql_insert_inventory = `INSERT INTO inventory (
     name, price, categoryId, imageUrl)
-    VALUES 
+    VALUES
     ('Tulip', 10, 1, 'https://i.imgur.com/Ttir6mp.jpg'),
     ('Lavender', 15, 1, 'https://i.imgur.com/gH33WyT.jpg'),
     ('Fuchsia', 50, 1, 'https://i.imgur.com/s27QJBL.jpg'),
@@ -106,7 +106,7 @@ const sql_insert_inventory = `INSERT INTO inventory (
     ('Tulip (1 kg)', 200, 4, 'https://i.imgur.com/WUYYzBG.jpg');
 `;
 
-const sql_insert_category = `INSERT INTO categories (name, description, seasonal) VALUES 
+const sql_insert_category = `INSERT INTO categories (name, description, seasonal) VALUES
     ('Flowers', 'Flowers make us smile', 'Yes'),
     ('Indoor plants', 'Bring nature inside', 'No'),
     ('Tools', 'Every gardener needs good tools', 'No'),
@@ -165,7 +165,6 @@ let indexes = [
 
 if ((tables.length !== table_data.length) || (tables.length !== table_names.length)) {
     console.log("tables, names and data arrays length mismatch.")
-    return
 }
 
 //create tables and populate with data (if provided)
