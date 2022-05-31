@@ -24,8 +24,9 @@ module.exports = class User {
             newUser = new User(results[0].user_name, results[0].first_name,
                 results[0].last_name, results[0].email, results[0].password, results[0].role)
             newUser.id = results[0].id
+            return newUser
         }
-        return newUser
+        return undefined
     }
 
     //dohvat korisnika na osnovu email adrese

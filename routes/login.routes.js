@@ -12,11 +12,30 @@ router.get('/', function (req, res, next) {
     });
 });
 
-router.post('/', function (req, res, next) {
-    //####################### ZADATAK #######################
-    //postupak prijave korisnika
+router.post('/', async function (req, res, next) {
+    console.log(req.body);
+    let user = await User.fetchByUsername(req.body.user);
 
-    //#######################################################
+    if (user === undefined) {
+        res.render('login', {
+            title: 'Login',
+            user: req.session.user,
+            linkActive: 'login',
+            err: 'No user with that username'
+        });
+        return;
+    } else if (user.checkPassword(req.body.password)) {
+        req.session.user = user;
+        res.redirect('/');
+    }
+
+    res.render('login', {
+        title: 'Login',
+        user: req.session.user,
+        linkActive: 'login',
+        err: 'Invalid credentials'
+    });
+    return;
 
 });
 
