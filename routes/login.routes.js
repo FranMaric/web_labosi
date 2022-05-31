@@ -27,6 +27,7 @@ router.post('/', async function (req, res, next) {
     } else if (user.checkPassword(req.body.password)) {
         req.session.user = user;
         res.redirect('/');
+        return;
     }
 
     res.render('login', {
