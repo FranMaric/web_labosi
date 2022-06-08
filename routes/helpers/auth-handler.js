@@ -14,4 +14,5 @@ function authHandler(req, res, next) {
 
 
 }
+
 module.exports = authHandler;

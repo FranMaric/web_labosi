@@ -16,6 +16,7 @@ const signupRoute = require('./routes/signup.routes');
 const cartRoute = require('./routes/cart.routes');
 const userRoute = require('./routes/user.routes');
 const checkoutRoute = require('./routes/checkout.routes');
+const feedbackRoute = require('./routes/feedback.routes');
 
 //middleware - predlošci (ejs)
 app.set('views', path.join(__dirname, 'views'));
@@ -55,6 +56,7 @@ app.use('/signup', signupRoute);
 app.use('/cart', cartRoute);
 app.use('/user', userRoute);
 app.use('/checkout', checkoutRoute);
+app.use('/feedback', feedbackRoute);
 
 
 //pokretanje poslužitelja na portu 3000
